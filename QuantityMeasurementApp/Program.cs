@@ -5,11 +5,9 @@ class Program
 {
     static void Main()
     {
-      
-         bool feetResult = QuantityMeasurementService.AreFeetEqual(1.0, 1.0);
-        Console.WriteLine($"Feet Equal: {feetResult}");
+           var q1 = new QuantityLength(1.0, LengthUnit.Feet);
+        var q2 = new QuantityLength(12.0, LengthUnit.Inch);
 
-        bool inchResult = QuantityMeasurementService.AreInchesEqual(1.0, 1.0);
-        Console.WriteLine($"Inches Equal: {inchResult}");
+        Console.WriteLine(q1.Equals(q2)); // true
     }
     }
