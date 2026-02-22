@@ -11,13 +11,21 @@ namespace QuantityMeasurementApp.Services
     /// </summary>
     public class QuantityMeasurementService
     {
-        // Method to compare two Feet instances for equality
-        public bool AreEqual(Feet feet1, Feet feet2)
-        {// Handle null cases
-            if (feet1 == null || feet2 == null)
-                return false;
-                // Use the overridden Equals method in the Feet class for value-based comparison
-            return feet1.Equals(feet2);
+        // Method to compare two Feet instances for equality based on their values
+          public static bool AreFeetEqual(double v1, double v2)
+        {   // Create two Feet instances with the provided values
+            var f1 = new Feet(v1);
+            var f2 = new Feet(v2);
+            // Compare the two Feet instances for equality and return the result
+            return f1.Equals(f2);
+        }
+          // Method to compare two Inches instances for equality based on their values  
+        public static bool AreInchesEqual(double v1, double v2)
+        {  // Create two Inches instances with the provided values
+            var i1 = new Inches(v1);
+            var i2 = new Inches(v2);
+            // Compare the two Inches instances for equality and return the result
+            return i1.Equals(i2);
         }
     }
 }
