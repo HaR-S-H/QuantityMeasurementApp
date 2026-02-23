@@ -11,11 +11,17 @@ namespace QuantityMeasurementApp.Models
         // Base unit
         private readonly LengthUnit _unit;
         // Constructor
-        public QuantityLength(double value, LengthUnit unit)
-        {
-            _value = value;
-            _unit = unit;
-        }
+      public QuantityLength(double value, LengthUnit unit)
+{
+    if (unit == null)
+        throw new ArgumentException("Unit cannot be null");
+
+    if (double.IsNaN(value) || double.IsInfinity(value))
+        throw new ArgumentException("Invalid value");
+
+    _value = value;
+    _unit = unit;
+}
 
         // Convert to base unit (feet)
         private double ToFeet()
@@ -23,25 +29,51 @@ namespace QuantityMeasurementApp.Models
             return _value * _unit.ToFeetFactor();
         }
         
-
-        public bool Equals(QuantityLength? other)
-        {
-            if (other is null)
-                return false;
-
-            // Convert both to same base unit
-            return ToFeet().CompareTo(other.ToFeet()) == 0;
-        }
-        // Equals method
-
+    // Define a small value for comparison
+       private const double EPSILON = 1e-6;
+    // Implement the IEquatable interface to compare two QuantityLength instances for equality based on their values and units
+    public bool Equals(QuantityLength? other)
+    {
+        // Check for null and compare the values of the two QuantityLength instances for equality, allowing for a small margin of error (EPSILON) to account for floating-point precision issues
+        if (other is null)
+            return false;
+        // Compare the values of the two QuantityLength instances for equality, allowing for a small margin of error (EPSILON) to account for floating-point precision issues
+        return Math.Abs(ToFeet() - other.ToFeet()) < EPSILON;
+    }
+    // Equals method
+        // Override of the Equals method to provide value-based equality comparison for QuantityLength instances
         public override bool Equals(object? obj)
         {
             return obj is QuantityLength other && Equals(other);
         }
-
+    // Override of the GetHashCode method to ensure that instances of QuantityLength can be used in hash-based collections and compared accurately based on their values and units
         public override int GetHashCode()
         {
             return HashCode.Combine(ToFeet());
         }
+        public static double Convert(double value, LengthUnit source, LengthUnit target)
+{
+    // validation
+    if (source == null || target == null)
+        throw new ArgumentException("Source or target unit cannot be null");
+
+    if (double.IsNaN(value) || double.IsInfinity(value))
+        throw new ArgumentException("Value must be finite");
+
+    // convert source → base (feet)
+    double valueInFeet = value * source.ToFeetFactor();
+
+    // convert base → target
+    return valueInFeet / target.ToFeetFactor();
+}
+        public double ConvertTo(LengthUnit targetUnit)
+{
+    return Convert(_value, _unit, targetUnit);
+}
+        public QuantityLength ConvertToQuantity(LengthUnit targetUnit)
+{
+    double newValue = ConvertTo(targetUnit);
+    return new QuantityLength(newValue, targetUnit);
+}
     }
 }
