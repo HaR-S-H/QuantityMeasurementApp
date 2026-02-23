@@ -9,7 +9,7 @@ namespace QuantityMeasurementApp.Models
      public class Feet
     {
         // Immutable value representing the measurement in feet 
-        public readonly double _value;
+        private readonly double _value;
 
         // Constructor
         public Feet(double value)
