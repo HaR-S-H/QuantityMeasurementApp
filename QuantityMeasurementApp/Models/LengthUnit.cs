@@ -12,7 +12,7 @@ namespace QuantityMeasurementApp.Models
 
     public static class LengthUnitExtensions
     { // Extension method to convert LengthUnit to a factor for conversion to feet
-        public static double ToFeetFactor(this LengthUnit unit)
+        public static double ToFeetFactor(LengthUnit unit)
         { // Return the conversion factor to feet based on the specified LengthUnit
             return unit switch
             {
