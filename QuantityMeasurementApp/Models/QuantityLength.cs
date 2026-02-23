@@ -1,16 +1,16 @@
 
 namespace QuantityMeasurementApp.Models
-{ /// <summary>
+{
+     /// <summary>
   ///  Class representing a quantity of length in the Quantity Measurement application.
   /// This class provides methods to convert the quantity to the base unit (feet) and compare it with other quantity lengths for equality.
   ///  The QuantityLength class can be used in conjunction with other measurement classes, such as Feet, to facilitate operations on various units of measurement within the application.
   /// </summary>
     public class QuantityLength : IEquatable<QuantityLength>
-    { // Properties
+    {
         private readonly double _value;
-        // Base unit
         private readonly LengthUnit _unit;
-        // Constructor
+
         public QuantityLength(double value, LengthUnit unit)
         {
             _value = value;
@@ -18,21 +18,19 @@ namespace QuantityMeasurementApp.Models
         }
 
         // Convert to base unit (feet)
-        private double ToFeet()
+        private double ConvertToBaseUnit()
         {
-            return _value * _unit.ToFeetFactor();
+            return _value * LengthUnitExtensions.ToFeetFactor(_unit);
         }
-        
 
+        // UC3 → Compare two lengths using base unit
         public bool Equals(QuantityLength? other)
         {
             if (other is null)
                 return false;
 
-            // Convert both to same base unit
-            return ToFeet().CompareTo(other.ToFeet()) == 0;
+            return ConvertToBaseUnit().CompareTo(other.ConvertToBaseUnit()) == 0;
         }
-        // Equals method
 
         public override bool Equals(object? obj)
         {
@@ -41,7 +39,7 @@ namespace QuantityMeasurementApp.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ToFeet());
+            return ConvertToBaseUnit().GetHashCode();
         }
     }
 }

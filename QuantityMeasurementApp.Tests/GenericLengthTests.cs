@@ -7,7 +7,7 @@ namespace QuantityMeasurementApp.Tests
   /// These tests validate the equality logic implemented in the QuantityLength class, ensuring that measurements are compared accurately
   ///     and that null values are handled correctly.
   /// </summary>
-    public class QuantityLengthTests
+    public class GenericLengthTests
     { // Test for equality of two QuantityLength instances with the same value and unit (Feet)
         [Test]
         public void testEquality_FeetToFeet_SameValue()

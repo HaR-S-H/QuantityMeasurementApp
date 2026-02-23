@@ -8,7 +8,7 @@ namespace QuantityMeasurementApp.Tests
 /// These tests validate the equality logic implemented in the Feet class, ensuring that measurements are compared accurately
 ///     and that null values are handled correctly.
 /// </summary>
-    public class FeetTests
+    public class FeetEqualityTests
     {// Test for equality of two Feet instances with the same value
         [Test]
         public void testEquality_SameValue()
