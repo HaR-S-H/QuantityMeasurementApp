@@ -12,20 +12,20 @@ namespace QuantityMeasurementApp.Services
     public class QuantityMeasurementService
     {
         // Method to compare two Feet instances for equality based on their values
-          public static bool AreFeetEqual(double v1, double v2)
+          public static bool AreFeetEqual(double value1, double value2)
         {   // Create two Feet instances with the provided values
-            var f1 = new Feet(v1);
-            var f2 = new Feet(v2);
+             Feet feet1 = new Feet(value1);
+             Feet feet2 = new Feet(value2);
             // Compare the two Feet instances for equality and return the result
-            return f1.Equals(f2);
+            return feet1.Equals(feet2);
         }
           // Method to compare two Inches instances for equality based on their values  
-        public static bool AreInchesEqual(double v1, double v2)
+        public static bool AreInchesEqual(double value1, double value2)
         {  // Create two Inches instances with the provided values
-            var i1 = new Inches(v1);
-            var i2 = new Inches(v2);
+            Inches inch1 = new Inches(value1);
+            Inches inch2 = new Inches(value2);
             // Compare the two Inches instances for equality and return the result
-            return i1.Equals(i2);
+            return inch1.Equals(inch2);
         }
     }
 }
