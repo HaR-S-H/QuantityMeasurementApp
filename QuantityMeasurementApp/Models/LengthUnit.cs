@@ -9,28 +9,38 @@ namespace QuantityMeasurementApp.Models
         Feet,
         Inch,
         Yard,
-          Centimeter
+        Centimeter
     }
 
-    public static class LengthUnitExtensions
-    { // Extension method to convert LengthUnit to a factor for conversion to feet
-        public static double ToFeetFactor(this LengthUnit unit)
+    public static class LengthUnitMethods
+    {
+        // Conversion factors
+        private const double INCHES_PER_FOOT = 12.0;
+        private const double FEET_PER_YARD = 3.0;
+        private const double CENTIMETERS_PER_FOOT = 30.48;
+
+        // Convert a value in this unit to feet (base unit)
+        public static double ConvertToBaseUnit(this LengthUnit unit, double value)
         {
-            // Return the conversion factor to feet based on the specified LengthUnit
             return unit switch
             {
-                LengthUnit.Feet => 1.0,
+                LengthUnit.Feet => value,
+                LengthUnit.Inch => value / INCHES_PER_FOOT,
+                LengthUnit.Yard => value * FEET_PER_YARD,
+                LengthUnit.Centimeter => value / CENTIMETERS_PER_FOOT,
+                _ => throw new ArgumentException("Unsupported unit")
+            };
+        }
 
-                // 12 inches = 1 foot
-                LengthUnit.Inch => 1.0 / 12.0,
-
-                // 1 yard = 3 feet
-                LengthUnit.Yard => 3.0,
-
-                // 1 cm = 0.393701 inch
-                // convert inch → feet
-                LengthUnit.Centimeter => 0.393701 / 12.0,
-                // Throw an exception for unsupported units
+        // Convert a value in feet (base unit) to this unit
+        public static double ConvertFromBaseUnit(this LengthUnit unit, double baseValue)
+        {
+            return unit switch
+            {
+                LengthUnit.Feet => baseValue,
+                LengthUnit.Inch => baseValue * INCHES_PER_FOOT,
+                LengthUnit.Yard => baseValue / FEET_PER_YARD,
+                LengthUnit.Centimeter => baseValue * CENTIMETERS_PER_FOOT,
                 _ => throw new ArgumentException("Unsupported unit")
             };
         }
