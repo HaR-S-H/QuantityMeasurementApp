@@ -50,6 +50,48 @@ namespace QuantityMeasurementApp.Models
             return new Quantity<U>(newValue, targetUnit);
         }
 
+        // Centralized arithmetic operation enum
+        private enum ArithmeticOperation
+        {
+            Add,
+            Subtract,
+            Divide
+        }
+
+        // Centralized validation for operands and target unit
+        private static void ValidateArithmeticOperands(Quantity<U> a, Quantity<U> b, U? targetUnit, bool targetUnitRequired, ArithmeticOperation op)
+        {
+            if (a == null || b == null)
+                throw new ArgumentException("Operands cannot be null");
+            if (double.IsNaN(a._value) || double.IsInfinity(a._value) || double.IsNaN(b._value) || double.IsInfinity(b._value))
+                throw new ArgumentException("Operand values must be finite");
+            if (GetUnitCategory(a._unit) != GetUnitCategory(b._unit))
+                throw new ArgumentException($"Cannot {op.ToString().ToLower()} quantities of different categories");
+            if (targetUnitRequired && (targetUnit == null || targetUnit.Equals(null)))
+                throw new ArgumentException("Target unit cannot be null");
+        }
+
+        // Centralized arithmetic logic
+        private static double PerformBaseArithmetic(Quantity<U> a, Quantity<U> b, ArithmeticOperation op)
+        {
+            double aInBase = ConvertToBase(a._value, a._unit);
+            double bInBase = ConvertToBase(b._value, b._unit);
+            switch (op)
+            {
+                case ArithmeticOperation.Add:
+                    return aInBase + bInBase;
+                case ArithmeticOperation.Subtract:
+                    return aInBase - bInBase;
+                case ArithmeticOperation.Divide:
+                    if (Math.Abs(bInBase) < EPSILON)
+                        throw new ArithmeticException("Division by zero");
+                    return aInBase / bInBase;
+                default:
+                    throw new InvalidOperationException("Unsupported arithmetic operation");
+            }
+        }
+
+        // Addition
         public static Quantity<U> Add(Quantity<U> a, Quantity<U> b)
         {
             return Add(a, b, a._unit);
@@ -57,18 +99,33 @@ namespace QuantityMeasurementApp.Models
 
         public static Quantity<U> Add(Quantity<U> a, Quantity<U> b, U targetUnit)
         {
-            if (a == null || b == null)
-                throw new ArgumentException("Operands cannot be null");
-            if (double.IsNaN(a._value) || double.IsInfinity(a._value) || double.IsNaN(b._value) || double.IsInfinity(b._value))
-                throw new ArgumentException("Operand values must be finite");
-            if (GetUnitCategory(a._unit) != GetUnitCategory(b._unit))
-                throw new ArgumentException("Cannot add quantities of different categories");
-            double aInBase = ConvertToBase(a._value, a._unit);
-            double bInBase = ConvertToBase(b._value, b._unit);
-            double sumInBase = aInBase + bInBase;
-            double sumInTarget = ConvertFromBase(sumInBase, targetUnit);
-            sumInTarget = Math.Round(sumInTarget, 6);
-            return new Quantity<U>(sumInTarget, targetUnit);
+            ValidateArithmeticOperands(a, b, targetUnit, true, ArithmeticOperation.Add);
+            double resultInBase = PerformBaseArithmetic(a, b, ArithmeticOperation.Add);
+            double resultInTarget = ConvertFromBase(resultInBase, targetUnit);
+            resultInTarget = Math.Round(resultInTarget, 2);
+            return new Quantity<U>(resultInTarget, targetUnit);
+        }
+
+        // Subtraction
+        public static Quantity<U> Subtract(Quantity<U> a, Quantity<U> b)
+        {
+            return Subtract(a, b, a._unit);
+        }
+
+        public static Quantity<U> Subtract(Quantity<U> a, Quantity<U> b, U targetUnit)
+        {
+            ValidateArithmeticOperands(a, b, targetUnit, true, ArithmeticOperation.Subtract);
+            double resultInBase = PerformBaseArithmetic(a, b, ArithmeticOperation.Subtract);
+            double resultInTarget = ConvertFromBase(resultInBase, targetUnit);
+            resultInTarget = Math.Round(resultInTarget, 2);
+            return new Quantity<U>(resultInTarget, targetUnit);
+        }
+
+        // Division
+        public static double Divide(Quantity<U> a, Quantity<U> b)
+        {
+            ValidateArithmeticOperands(a, b, null, false, ArithmeticOperation.Divide);
+            return PerformBaseArithmetic(a, b, ArithmeticOperation.Divide);
         }
 
         private static double ConvertToBase(double value, U unit)
@@ -95,8 +152,7 @@ namespace QuantityMeasurementApp.Models
 
         public override string ToString()
         {
-            string unitName = _unit.ToString();
-            return $"Quantity({_value}, {unitName})";
+            return $"Quantity({_value}, {_unit})";
         }
     }
 }
