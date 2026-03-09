@@ -77,6 +77,8 @@ namespace QuantityMeasurementApp.Models
                 return LengthUnitExtensions.ConvertToBaseUnit(lengthUnit, value);
             if (unit is WeightUnit weightUnit)
                 return WeightUnitExtensions.ConvertToBaseUnit(weightUnit, value);
+            if (unit is VolumeUnit volumeUnit)
+                return VolumeUnitExtensions.ConvertToBaseUnit(volumeUnit, value);
             throw new ArgumentException("Unsupported unit type");
         }
 
@@ -86,6 +88,8 @@ namespace QuantityMeasurementApp.Models
                 return LengthUnitExtensions.ConvertFromBaseUnit(lengthUnit, baseValue);
             if (unit is WeightUnit weightUnit)
                 return WeightUnitExtensions.ConvertFromBaseUnit(weightUnit, baseValue);
+            if (unit is VolumeUnit volumeUnit)
+                return VolumeUnitExtensions.ConvertFromBaseUnit(volumeUnit, baseValue);
             throw new ArgumentException("Unsupported unit type");
         }
 
