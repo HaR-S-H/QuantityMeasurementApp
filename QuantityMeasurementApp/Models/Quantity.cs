@@ -100,6 +100,8 @@ namespace QuantityMeasurementApp.Models
         public static Quantity<U> Add(Quantity<U> a, Quantity<U> b, U targetUnit)
         {
             ValidateArithmeticOperands(a, b, targetUnit, true, ArithmeticOperation.Add);
+            // Check if operation is supported (for temperature, etc.)
+            ValidateOperationSupportForUnit(a._unit, "add");
             double resultInBase = PerformBaseArithmetic(a, b, ArithmeticOperation.Add);
             double resultInTarget = ConvertFromBase(resultInBase, targetUnit);
             resultInTarget = Math.Round(resultInTarget, 2);
@@ -115,6 +117,7 @@ namespace QuantityMeasurementApp.Models
         public static Quantity<U> Subtract(Quantity<U> a, Quantity<U> b, U targetUnit)
         {
             ValidateArithmeticOperands(a, b, targetUnit, true, ArithmeticOperation.Subtract);
+            ValidateOperationSupportForUnit(a._unit, "subtract");
             double resultInBase = PerformBaseArithmetic(a, b, ArithmeticOperation.Subtract);
             double resultInTarget = ConvertFromBase(resultInBase, targetUnit);
             resultInTarget = Math.Round(resultInTarget, 2);
@@ -125,6 +128,7 @@ namespace QuantityMeasurementApp.Models
         public static double Divide(Quantity<U> a, Quantity<U> b)
         {
             ValidateArithmeticOperands(a, b, null, false, ArithmeticOperation.Divide);
+            ValidateOperationSupportForUnit(a._unit, "divide");
             return PerformBaseArithmetic(a, b, ArithmeticOperation.Divide);
         }
 
@@ -136,6 +140,8 @@ namespace QuantityMeasurementApp.Models
                 return WeightUnitExtensions.ConvertToBaseUnit(weightUnit, value);
             if (unit is VolumeUnit volumeUnit)
                 return VolumeUnitExtensions.ConvertToBaseUnit(volumeUnit, value);
+            if (unit is TemperatureUnit tempUnit)
+                return TemperatureUnitExtensions.ConvertToBaseUnit(tempUnit, value);
             throw new ArgumentException("Unsupported unit type");
         }
 
@@ -147,7 +153,19 @@ namespace QuantityMeasurementApp.Models
                 return WeightUnitExtensions.ConvertFromBaseUnit(weightUnit, baseValue);
             if (unit is VolumeUnit volumeUnit)
                 return VolumeUnitExtensions.ConvertFromBaseUnit(volumeUnit, baseValue);
+            if (unit is TemperatureUnit tempUnit)
+                return TemperatureUnitExtensions.ConvertFromBaseUnit(tempUnit, baseValue);
             throw new ArgumentException("Unsupported unit type");
+        }
+
+        // Helper to call ValidateOperationSupport if available
+        private static void ValidateOperationSupportForUnit(U unit, string operation)
+        {
+            if (unit is TemperatureUnit tempUnit)
+            {
+                TemperatureUnitExtensions.ValidateOperationSupport(tempUnit, operation);
+            }
+            // For other units, do nothing (all operations supported by default)
         }
 
         public override string ToString()
