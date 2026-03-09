@@ -11,6 +11,7 @@ namespace QuantityMeasurementApp.Models
         private readonly double _value;
         private readonly LengthUnit _unit;
 
+    
         public QuantityLength(double value, LengthUnit unit)
         {
             _value = value;

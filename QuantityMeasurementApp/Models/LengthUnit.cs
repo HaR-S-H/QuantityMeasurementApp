@@ -14,12 +14,17 @@ namespace QuantityMeasurementApp.Models
     { // Extension method to convert LengthUnit to a factor for conversion to feet
         public static double ToFeetFactor(LengthUnit unit)
         { // Return the conversion factor to feet based on the specified LengthUnit
-            return unit switch
-            {
-                LengthUnit.Feet => 1.0,
-                LengthUnit.Inch => 1.0 / 12.0,
-                _ => throw new ArgumentException("Unsupported unit")
-            };
+           switch (unit)
+        {
+    case LengthUnit.Feet:
+        return 1.0;
+
+    case LengthUnit.Inch:
+        return 1.0 / 12.0;
+
+    default:
+        throw new ArgumentException("Unsupported unit");
+}
         }
     }
 }
