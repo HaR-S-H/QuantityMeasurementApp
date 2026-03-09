@@ -6,7 +6,49 @@ namespace QuantityMeasurementApp.Models
   ///  The QuantityLength class can be used in conjunction with other measurement classes, such as Feet, to facilitate operations on various units of measurement within the application.
   /// </summary>
     public class QuantityLength : IEquatable<QuantityLength>
-    { // Properties
+    {
+        // Expose unit and value for testing and comparison
+        public LengthUnit GetUnit() => _unit;
+        public double GetValue() => _value;
+        // Properties
+                /// <summary>
+                /// Adds two QuantityLength objects and returns the result in the specified target unit.
+                /// </summary>
+                /// <param name="a">First quantity</param>
+                /// <param name="b">Second quantity</param>
+                /// <param name="targetUnit">Target unit for the result</param>
+                /// <returns>New QuantityLength in the target unit</returns>
+                /// <exception cref="ArgumentException">If any argument is invalid</exception>
+                public static QuantityLength Add(QuantityLength a, QuantityLength b, LengthUnit targetUnit)
+                {
+                    if (a == null || b == null)
+                        throw new ArgumentException("Operands cannot be null");
+                    if (targetUnit == null)
+                        throw new ArgumentException("Target unit cannot be null");
+                    if (double.IsNaN(a._value) || double.IsInfinity(a._value) || double.IsNaN(b._value) || double.IsInfinity(b._value))
+                        throw new ArgumentException("Operand values must be finite");
+
+                    // Convert both to base unit (feet)
+                    double aInFeet = a.ToFeet();
+                    double bInFeet = b.ToFeet();
+                    double sumInFeet = aInFeet + bInFeet;
+
+                    // Convert sum to target unit
+                    double sumInTarget = sumInFeet / targetUnit.ToFeetFactor();
+                    // Round to 6 decimal places for precision
+                    sumInTarget = Math.Round(sumInTarget, 6);
+                    return new QuantityLength(sumInTarget, targetUnit);
+                }
+
+                /// <summary>
+                /// Overload for backward compatibility: returns result in the unit of the first operand.
+                /// </summary>
+                public static QuantityLength Add(QuantityLength a, QuantityLength b)
+                {
+                    if (a == null)
+                        throw new ArgumentException("First operand cannot be null");
+                    return Add(a, b, a._unit);
+                }
         private readonly double _value;
         // Base unit
         private readonly LengthUnit _unit;
