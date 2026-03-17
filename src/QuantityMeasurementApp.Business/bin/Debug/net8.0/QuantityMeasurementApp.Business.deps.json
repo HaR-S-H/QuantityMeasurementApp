@@ -1,0 +1,56 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "QuantityMeasurementApp.Business/1.0.0": {
+        "dependencies": {
+          "QuantityMeasurementApp.Models": "1.0.0",
+          "QuantityMeasurementApp.Repository": "1.0.0"
+        },
+        "runtime": {
+          "QuantityMeasurementApp.Business.dll": {}
+        }
+      },
+      "QuantityMeasurementApp.Models/1.0.0": {
+        "runtime": {
+          "QuantityMeasurementApp.Models.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "QuantityMeasurementApp.Repository/1.0.0": {
+        "dependencies": {
+          "QuantityMeasurementApp.Models": "1.0.0"
+        },
+        "runtime": {
+          "QuantityMeasurementApp.Repository.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "QuantityMeasurementApp.Business/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "QuantityMeasurementApp.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "QuantityMeasurementApp.Repository/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

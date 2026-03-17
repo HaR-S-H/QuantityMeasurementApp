@@ -1,0 +1,16 @@
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\bin\Debug\net8.0\QuantityMeasurementApp.Repository.deps.json
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\bin\Debug\net8.0\QuantityMeasurementApp.Repository.dll
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\bin\Debug\net8.0\QuantityMeasurementApp.Repository.pdb
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\bin\Debug\net8.0\QuantityMeasurementApp.Models.dll
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\bin\Debug\net8.0\QuantityMeasurementApp.Models.pdb
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.csproj.AssemblyReference.cache
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.AssemblyInfoInputs.cache
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.AssemblyInfo.cs
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.csproj.CoreCompileInputs.cache
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.sourcelink.json
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\Quantity.4E656939.Up2Date
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.dll
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\refint\QuantityMeasurementApp.Repository.dll
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\QuantityMeasurementApp.Repository.pdb
+C:\Users\h8551\OneDrive\Desktop\QuantityMeasurementApp\src\QuantityMeasurementApp.Repository\obj\Debug\net8.0\ref\QuantityMeasurementApp.Repository.dll
