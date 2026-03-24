@@ -18,7 +18,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Division_KilogramByKilogram_ReturnsExpectedRatio()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Divide(10.0, WeightUnit.Kilogram, 5.0, WeightUnit.Kilogram);
 
@@ -31,7 +31,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Division_GramByKilogram_ReturnsExpectedRatio()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Divide(2000.0, WeightUnit.Gram, 1.0, WeightUnit.Kilogram);
 

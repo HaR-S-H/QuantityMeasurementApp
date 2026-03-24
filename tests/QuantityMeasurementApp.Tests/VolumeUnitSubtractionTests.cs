@@ -18,7 +18,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_LitreMinusMillilitre_DefaultTargetLitre()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(5.0, VolumeUnit.Litre, 500.0, VolumeUnit.Millilitre);
 
@@ -32,7 +32,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_LitreMinusLitre_ExplicitTargetMillilitre()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(
                 5.0,

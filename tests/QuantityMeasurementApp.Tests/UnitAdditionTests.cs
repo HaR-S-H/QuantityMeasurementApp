@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuantityMeasurementApp.Models;
 using QuantityMeasurementApp.Business;
+using QuantityMeasurementApp.Models;
 
 namespace QuantityMeasurementApp.Tests
 {
@@ -23,7 +23,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies same-unit addition in feet (no conversion required).
         public void Addition_SameUnit_FeetPlusFeet()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(1.0, LengthUnit.Feet, 2.0, LengthUnit.Feet, LengthUnit.Feet);
 
@@ -35,7 +35,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies same-unit addition in inches.
         public void Addition_SameUnit_InchesPlusInches()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 6.0,
@@ -53,7 +53,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies cross-unit addition with result requested in feet.
         public void Addition_CrossUnit_FeetPlusInches_ResultInFeet()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 1.0,
@@ -71,7 +71,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies cross-unit addition with result requested in inches.
         public void Addition_CrossUnit_InchesPlusFeet_ResultInInches()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 12.0,
@@ -89,7 +89,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies yard and feet addition with result in yards.
         public void Addition_CrossUnit_YardsPlusFeet_ResultInYards()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(1.0, LengthUnit.Yards, 3.0, LengthUnit.Feet, LengthUnit.Yards);
 
@@ -101,7 +101,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies centimeter and inch addition with floating-point tolerance.
         public void Addition_CrossUnit_CentimetersPlusInches_ResultInCentimeters()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 2.54,
@@ -119,7 +119,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies commutativity when both results are compared in the same target unit.
         public void Addition_Commutative_WhenComparedInSameTargetUnit()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var first = service.Add(1.0, LengthUnit.Feet, 12.0, LengthUnit.Inches, LengthUnit.Feet);
             var second = service.Add(
@@ -137,7 +137,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies additive identity: adding zero does not change the value.
         public void Addition_WithZero_ReturnsSameValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(5.0, LengthUnit.Feet, 0.0, LengthUnit.Inches, LengthUnit.Feet);
 
@@ -149,7 +149,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies precision behavior for mixed large and very small magnitudes.
         public void Addition_LargeAndSmallValues_MaintainsPrecision()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
             var large = 1_000_000_000.0;
             var small = 0.0001;
 
@@ -168,7 +168,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies invalid target units are rejected.
         public void Addition_InvalidTargetUnit_ThrowsArgumentException()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
             var invalidUnit = (LengthUnit)999;
 
             Assert.ThrowsException<ArgumentException>(() =>
@@ -180,7 +180,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies null operand handling in service overload.
         public void Addition_NullMeasurement_ThrowsArgumentNullException()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
             Quantity<LengthUnit> second = new Quantity<LengthUnit>(1.0, LengthUnit.Feet);
 
             Assert.ThrowsException<ArgumentNullException>(() =>
@@ -192,7 +192,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies explicit target as a third unit (different from both operands).
         public void Addition_ExplicitTargetUnit_Yards_FromFeetAndInches()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 1.0,
@@ -210,7 +210,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies explicit target unit conversion to centimeters.
         public void Addition_ExplicitTargetUnit_Centimeters_FromInches()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 1.0,
@@ -228,7 +228,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies explicit target matching first operand unit.
         public void Addition_ExplicitTargetUnit_SameAsFirstOperand()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(2.0, LengthUnit.Yards, 3.0, LengthUnit.Feet, LengthUnit.Yards);
 
@@ -240,7 +240,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies explicit target matching second operand unit.
         public void Addition_ExplicitTargetUnit_SameAsSecondOperand()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(2.0, LengthUnit.Yards, 3.0, LengthUnit.Feet, LengthUnit.Feet);
 
@@ -252,7 +252,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies commutativity with explicit third target unit.
         public void Addition_ExplicitTargetUnit_CommutativeInYards()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var first = service.Add(
                 1.0,
@@ -278,7 +278,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies zero operand with explicit target conversion.
         public void Addition_ExplicitTargetUnit_WithZero_ResultInYards()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 5.0,
@@ -296,7 +296,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies negative value addition with explicit target conversion.
         public void Addition_ExplicitTargetUnit_WithNegative_ResultInInches()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 5.0,
@@ -314,7 +314,7 @@ namespace QuantityMeasurementApp.Tests
         // Verifies mathematical equivalence across different target units.
         public void Addition_ExplicitTargetUnit_MathematicalEquivalenceAcrossTargets()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var inFeet = service.Add(
                 1.0,

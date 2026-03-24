@@ -15,7 +15,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_KilogramToGram_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(1.0, WeightUnit.Kilogram, WeightUnit.Gram);
 
@@ -25,7 +25,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_PoundToKilogram_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(2.0, WeightUnit.Pound, WeightUnit.Kilogram);
 
@@ -35,7 +35,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_GramToPound_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(500.0, WeightUnit.Gram, WeightUnit.Pound);
 
@@ -45,7 +45,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_RoundTrip_PreservesValueWithinTolerance()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
             const double value = 1.5;
 
             var grams = service.Convert(value, WeightUnit.Kilogram, WeightUnit.Gram);
@@ -57,7 +57,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_InvalidTargetUnit_ThrowsArgumentException()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             Assert.ThrowsException<ArgumentException>(() =>
                 service.Convert(1.0, WeightUnit.Kilogram, (WeightUnit)999)

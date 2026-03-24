@@ -15,7 +15,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_SameUnit_KilogramPlusKilogram()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(1.0, WeightUnit.Kilogram, 2.0, WeightUnit.Kilogram);
 
@@ -26,7 +26,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_CrossUnit_KilogramPlusGram_DefaultFirstOperandUnit()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(1.0, WeightUnit.Kilogram, 1000.0, WeightUnit.Gram);
 
@@ -37,7 +37,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_CrossUnit_PoundPlusKilogram_DefaultFirstOperandUnit()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 2.2046244201837775,
@@ -53,7 +53,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_ExplicitTargetUnit_Gram()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 1.0,
@@ -70,7 +70,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_ExplicitTargetUnit_Pound()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(
                 1.0,
@@ -87,7 +87,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_Commutative_WithExplicitTargetUnit()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var first = service.Add(
                 1.0,
@@ -111,7 +111,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_WithZero_ReturnsSameValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(5.0, WeightUnit.Kilogram, 0.0, WeightUnit.Gram);
 
@@ -122,7 +122,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_NegativeValues_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Add(5.0, WeightUnit.Kilogram, -2000.0, WeightUnit.Gram);
 
@@ -133,7 +133,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Addition_InvalidTargetUnit_ThrowsArgumentException()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             Assert.ThrowsException<ArgumentException>(() =>
                 service.Add(1.0, WeightUnit.Kilogram, 1.0, WeightUnit.Gram, (WeightUnit)999)

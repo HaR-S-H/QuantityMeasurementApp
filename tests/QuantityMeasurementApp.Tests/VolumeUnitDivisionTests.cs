@@ -18,7 +18,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Division_LitreByLitre_ReturnsExpectedRatio()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Divide(5.0, VolumeUnit.Litre, 10.0, VolumeUnit.Litre);
 
@@ -31,7 +31,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Division_MillilitreByLitre_ReturnsExpectedRatio()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Divide(1000.0, VolumeUnit.Millilitre, 1.0, VolumeUnit.Litre);
 

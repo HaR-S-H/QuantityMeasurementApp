@@ -18,7 +18,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_KilogramMinusGram_DefaultTargetKilogram()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(10.0, WeightUnit.Kilogram, 5000.0, WeightUnit.Gram);
 
@@ -32,7 +32,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_KilogramMinusGram_ExplicitTargetGram()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(
                 10.0,

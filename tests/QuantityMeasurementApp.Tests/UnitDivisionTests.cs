@@ -18,7 +18,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Division_SameUnit_ReturnsExpectedRatio()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Divide(10.0, LengthUnit.Feet, 2.0, LengthUnit.Feet);
 
@@ -31,7 +31,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Division_CrossUnit_InchesByFeet_ReturnsOne()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Divide(24.0, LengthUnit.Inches, 2.0, LengthUnit.Feet);
 

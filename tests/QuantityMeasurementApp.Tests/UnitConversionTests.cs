@@ -15,7 +15,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_FeetToInches_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(1.0, LengthUnit.Feet, LengthUnit.Inches);
 
@@ -25,7 +25,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_InchesToFeet_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(24.0, LengthUnit.Inches, LengthUnit.Feet);
 
@@ -35,7 +35,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_CentimetersToInches_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(2.54, LengthUnit.Centimeters, LengthUnit.Inches);
 
@@ -45,7 +45,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_ZeroValue_ReturnsZero()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(0.0, LengthUnit.Feet, LengthUnit.Inches);
 
@@ -55,7 +55,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_RoundTrip_PreservesValueWithinTolerance()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
             const double value = 7.5;
 
             var converted = service.Convert(value, LengthUnit.Yards, LengthUnit.Centimeters);
@@ -67,7 +67,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_NaN_ThrowsArgumentException()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             Assert.ThrowsException<ArgumentException>(() =>
                 service.Convert(double.NaN, LengthUnit.Feet, LengthUnit.Inches)

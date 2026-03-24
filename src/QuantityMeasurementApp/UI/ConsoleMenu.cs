@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using QuantityMeasurementApp.Business;
+using QuantityMeasurementApp.Controller;
 using QuantityMeasurementApp.Models;
 using QuantityMeasurementApp.Models.DTOs;
 
 namespace QuantityMeasurementApp.UI
 {
-    public static class ConsoleMenu
+    public class ConsoleMenu : IConsoleMenu
     {
-        public static void Run()
+        public void Run()
         {
-            IQuantityMeasurementService service = new QuantityMeasurementService();
+            IQuantityMeasurementService service = new QuantityMeasurementServiceImpl();
             var controller = new QuantityMeasurementController(service);
 
             while (true)

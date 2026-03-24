@@ -12,7 +12,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_LitreToMillilitre_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(1.0, VolumeUnit.Litre, VolumeUnit.Millilitre);
 
@@ -22,7 +22,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_GallonToLitre_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(2.0, VolumeUnit.Gallon, VolumeUnit.Litre);
 
@@ -32,7 +32,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_MillilitreToGallon_ReturnsExpectedValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(500.0, VolumeUnit.Millilitre, VolumeUnit.Gallon);
 
@@ -42,7 +42,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Convert_ZeroValue_ReturnsZero()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Convert(0.0, VolumeUnit.Litre, VolumeUnit.Millilitre);
 

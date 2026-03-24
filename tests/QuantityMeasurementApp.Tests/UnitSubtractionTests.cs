@@ -18,7 +18,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_SameUnit_FeetMinusFeet()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(10.0, LengthUnit.Feet, 6.0, LengthUnit.Feet);
 
@@ -32,7 +32,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_CrossUnit_FeetMinusInches_ImplicitTarget()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(10.0, LengthUnit.Feet, 6.0, LengthUnit.Inches);
 
@@ -46,7 +46,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_CrossUnit_FeetMinusInches_ExplicitTargetInches()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(
                 10.0,
@@ -66,7 +66,7 @@ namespace QuantityMeasurementApp.Tests
         [TestMethod]
         public void Subtraction_WhenSecondIsLarger_ReturnsNegativeValue()
         {
-            var service = new QuantityMeasurementService();
+            var service = new QuantityMeasurementServiceImpl();
 
             var result = service.Subtract(5.0, LengthUnit.Feet, 10.0, LengthUnit.Feet);
 
