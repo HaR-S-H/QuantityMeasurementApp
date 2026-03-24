@@ -5,15 +5,27 @@ using QuantityMeasurementApp.Business;
 using QuantityMeasurementApp.Controller;
 using QuantityMeasurementApp.Models;
 using QuantityMeasurementApp.Models.DTOs;
+using QuantityMeasurementApp.Repository;
 
 namespace QuantityMeasurementApp.UI
 {
     public class ConsoleMenu : IConsoleMenu
     {
+        private readonly IQuantityMeasurementService _service;
+        private readonly IQuantityMeasurementRepository _repository;
+
+        public ConsoleMenu(
+            IQuantityMeasurementService service,
+            IQuantityMeasurementRepository repository
+        )
+        {
+            _service = service;
+            _repository = repository;
+        }
+
         public void Run()
         {
-            IQuantityMeasurementService service = new QuantityMeasurementServiceImpl();
-            var controller = new QuantityMeasurementController(service);
+            var controller = new QuantityMeasurementController(_service, _repository);
 
             while (true)
             {
@@ -24,6 +36,7 @@ namespace QuantityMeasurementApp.UI
                 Console.WriteLine("3) Volume");
                 Console.WriteLine("4) Temperature");
                 Console.WriteLine("5) Show all supported units");
+                Console.WriteLine("6) Show persisted history");
                 Console.WriteLine("0) Exit");
                 Console.Write("Select a category: ");
 
@@ -44,6 +57,9 @@ namespace QuantityMeasurementApp.UI
                         break;
                     case "5":
                         PrintAvailableUnits();
+                        break;
+                    case "6":
+                        PrintHistory();
                         break;
                     case "0":
                         return;
@@ -253,6 +269,21 @@ namespace QuantityMeasurementApp.UI
             Console.WriteLine(
                 $"Temperature: {string.Join(", ", Enum.GetNames(typeof(TemperatureUnit)))}"
             );
+        }
+
+        private void PrintHistory()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Persisted operation history:");
+
+            foreach (var entry in _repository.GetAll())
+            {
+                var status = entry.IsError ? "ERROR" : "OK";
+                var errorPart = entry.IsError ? $" | {entry.ErrorMessage}" : string.Empty;
+                Console.WriteLine(
+                    $"[{entry.CreatedAt:yyyy-MM-dd HH:mm:ss}] {status} | {entry.Description}{errorPart}"
+                );
+            }
         }
     }
 }

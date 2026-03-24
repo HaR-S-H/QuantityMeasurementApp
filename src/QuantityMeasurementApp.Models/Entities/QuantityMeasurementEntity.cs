@@ -9,6 +9,7 @@ namespace QuantityMeasurementApp.Models.Entities
         public string Description { get; }
         public bool IsError { get; }
         public string ErrorMessage { get; }
+        public DateTime CreatedAt { get; }
 
         public QuantityMeasurementEntity(string description)
         {
@@ -16,6 +17,7 @@ namespace QuantityMeasurementApp.Models.Entities
             Description = description;
             IsError = false;
             ErrorMessage = string.Empty;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public QuantityMeasurementEntity(string description, string errorMessage)
@@ -24,6 +26,33 @@ namespace QuantityMeasurementApp.Models.Entities
             Description = description;
             IsError = true;
             ErrorMessage = errorMessage;
+            CreatedAt = DateTime.UtcNow;
+        }
+
+        private QuantityMeasurementEntity(
+            Guid id,
+            string description,
+            bool isError,
+            string errorMessage,
+            DateTime createdAt
+        )
+        {
+            Id = id;
+            Description = description;
+            IsError = isError;
+            ErrorMessage = errorMessage;
+            CreatedAt = createdAt;
+        }
+
+        public static QuantityMeasurementEntity Rehydrate(
+            Guid id,
+            string description,
+            bool isError,
+            string errorMessage,
+            DateTime createdAt
+        )
+        {
+            return new QuantityMeasurementEntity(id, description, isError, errorMessage, createdAt);
         }
     }
 }

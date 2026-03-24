@@ -1,5 +1,5 @@
 ﻿using System;
-using QuantityMeasurementApp.Business;
+using QuantityMeasurementApp.Startup;
 using QuantityMeasurementApp.UI;
 
 namespace QuantityMeasurementApp
@@ -16,7 +16,11 @@ namespace QuantityMeasurementApp
         {
             try
             {
-                IConsoleMenu menuApp = new ConsoleMenu();
+                var factory = new ServiceFactory();
+                var service = factory.CreateService();
+                var repository = factory.CreateRepository();
+
+                IConsoleMenu menuApp = new ConsoleMenu(service, repository);
                 menuApp.Run();
             }
             catch (Exception exception)
