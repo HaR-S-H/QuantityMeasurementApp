@@ -11,62 +11,44 @@ namespace QuantityMeasurementApp.Startup
 
         public ServiceFactory()
         {
-            var environment =
-                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-                ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
-                ?? "Development";
-
             _configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-                .AddJsonFile(
-                    $"appsettings.{environment}.json",
-                    optional: true,
-                    reloadOnChange: false
-                )
-                .AddEnvironmentVariables()
+                .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: false)
                 .Build();
         }
 
-        public IQuantityMeasurementService CreateService()
-        {
-            return new QuantityMeasurementServiceImpl();
-        }
+        public IQuantityMeasurementService CreateService() => new QuantityMeasurementServiceImpl();
 
         public IQuantityMeasurementRepository CreateRepository()
         {
-            var provider =
-                Environment.GetEnvironmentVariable("QMA_PERSISTENCE_PROVIDER")
-                ?? _configuration["Persistence:Provider"]
-                ?? "Cache";
+            var provider = _configuration["Persistence:Provider"];
 
-            if (provider.Equals("SqlServer", StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(provider, "SqlServer", StringComparison.OrdinalIgnoreCase))
             {
-                var connectionString =
-                    Environment.GetEnvironmentVariable("QMA_SQLSERVER_CONNECTION_STRING")
-                    ?? _configuration["Database:ConnectionString"];
-
-                if (string.IsNullOrWhiteSpace(connectionString))
-                {
-                    throw new InvalidOperationException(
-                        "Connection string is missing. Set Database:ConnectionString in appsettings or QMA_SQLSERVER_CONNECTION_STRING."
-                    );
-                }
-
-                try
-                {
-                    return new QuantityMeasurementDatabaseRepository(connectionString);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(
-                        $"Warning: SQL Server unavailable ({ex.Message}). Falling back to in-memory cache repository."
-                    );
-                    return QuantityMeasurementCacheRepository.Instance;
-                }
+                return QuantityMeasurementCacheRepository.Instance;
             }
 
-            return QuantityMeasurementCacheRepository.Instance;
+            var connectionString = _configuration["Database:ConnectionString"];
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException(
+                    "Connection string is missing. Set Database:ConnectionString in appsettings or QMA_SQLSERVER_CONNECTION_STRING."
+                );
+            }
+
+            try
+            {
+                return new QuantityMeasurementDatabaseRepository(connectionString);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(
+                    $"Warning: SQL Server unavailable ({ex.Message}). Falling back to in-memory cache repository."
+                );
+                return QuantityMeasurementCacheRepository.Instance;
+            }
         }
     }
 }
