@@ -1,8 +1,8 @@
 using System;
 
-namespace QuantityMeasurementApp.Models.Entities
+namespace QuantityMeasurementApp.Models.DTOs
 {
-    public class QuantityMeasurementEntity
+    public class OperationHistoryDto
     {
         public int Id { get; set; }
         public OperationType OperationType { get; set; }
@@ -10,6 +10,6 @@ namespace QuantityMeasurementApp.Models.Entities
         public string? ResponsePayload { get; set; }
         public bool IsSuccess { get; set; }
         public string? ErrorMessage { get; set; }
-        public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAtUtc { get; set; }
     }
 }
