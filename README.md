@@ -11,6 +11,21 @@ Each use case expands functionality in a controlled and maintainable way.
 
 ---
 
+## 🚀 Use Case 1 (UC1) – Feet Measurement Equality
+
+### Description
+
+UC1 establishes the foundational value-object behavior for quantity measurement by implementing equality checks for the Feet unit.
+
+### ✅ Features Implemented in UC1
+
+- Immutable Feet quantity representation
+- Value-based equality comparison for same-unit values
+- Defensive handling for invalid comparisons
+- Initial test coverage validating equality semantics
+
+---
+
 
 ## 🚀 Use Case 2 (UC2) – Feet and Inches Measurement Equality
 
@@ -492,6 +507,77 @@ Unlike length, weight, and volume, absolute temperatures do not support arithmet
 
 ---
 
+## 🚀 Use Case 15 (UC15) – REST API Layer for Quantity Operations
+
+### Description
+
+UC15 introduces an ASP.NET Core Web API interface over the existing business logic so quantity operations can be consumed via HTTP.
+
+### ✅ Features Implemented in UC15
+
+- New API project with controller-based endpoints
+- Quantity operation endpoints:
+   - `POST /api/quantitymeasurement/convert`
+   - `POST /api/quantitymeasurement/compare`
+   - `POST /api/quantitymeasurement/add`
+   - `POST /api/quantitymeasurement/subtract`
+   - `POST /api/quantitymeasurement/divide`
+- Swagger/OpenAPI configuration for endpoint discovery and testing
+- JSON enum handling configured to use string values only
+
+---
+
+## 🚀 Use Case 16 (UC16) – User Signup and Login with JWT
+
+### Description
+
+UC16 adds identity onboarding and authentication using JWT tokens, enabling stateless session handling for API clients.
+
+### ✅ Features Implemented in UC16
+
+- Auth endpoints:
+   - `POST /api/auth/signup`
+   - `POST /api/auth/login`
+- Password hashing using BCrypt
+- JWT token generation with signed claims (`sub`, `email`, `unique_name`, `jti`)
+- Configurable JWT issuer, audience, secret, and token expiry via `JwtOptions`
+- User persistence with unique-email constraint
+
+---
+
+## 🚀 Use Case 17 (UC17) – Secure Quantity APIs with Authorization
+
+### Description
+
+UC17 protects quantity operation endpoints so only authenticated users with valid bearer tokens can access them.
+
+### ✅ Features Implemented in UC17
+
+- JWT Bearer authentication middleware configured in API pipeline
+- `[Authorize]` applied to quantity controller endpoints
+- Public access retained only for auth onboarding endpoints (`signup`, `login`)
+- Token validation includes issuer, audience, signature, and lifetime checks
+- Zero clock skew enforcement for strict expiry handling
+
+---
+
+## 🚀 Use Case 18 (UC18) – Logout with Token Revocation
+
+### Description
+
+UC18 implements secure logout by revoking the current JWT token and preventing further use of that token after logout.
+
+### ✅ Features Implemented in UC18
+
+- `POST /api/auth/logout` endpoint for authenticated users
+- Token revocation using JWT `jti` claim
+- Persistent revoked-token storage with expiry metadata
+- Validation hook in JWT pipeline to reject revoked tokens
+- Expired revoked-token cleanup during logout flow
+- EF migration support for `Users` and `RevokedTokens` tables
+
+---
+
 ## 🛠 Tech Stack
 
 - .NET 8
@@ -505,48 +591,72 @@ Unlike length, weight, and volume, absolute temperatures do not support arithmet
 
 ```text
 QuantityMeasurementApp.sln
+README.md
 
 src/
-└── QuantityMeasurementApp
-    ├── Program.cs
-    ├── Models/
-    │   ├── Feet.cs
-    │   ├── IMeasurable.cs
-    │   ├── Inches.cs
-    │   ├── LengthUnit.cs
-    │   ├── Quantity.cs
-   │   ├── TemperatureUnit.cs
-    │   ├── VolumeUnit.cs
-    │   └── WeightUnit.cs
-    └── Services/
-        └── QuantityMeasurementService.cs
+├── QuantityMeasurementApp/
+│   ├── appsettings.Development.json
+│   ├── appsettings.json
+│   ├── Program.cs
+│   ├── QuantityMeasurementApp.csproj
+│   ├── Controller/
+│   ├── Interface/
+│   ├── Startup/
+│   └── UI/
+├── QuantityMeasurementApp.Api/
+│   ├── appsettings.Development.json
+│   ├── appsettings.json
+│   ├── Program.cs
+│   ├── QuantityMeasurementApp.Api.csproj
+│   ├── QuantityMeasurementApp.Api.http
+│   ├── Controllers/
+│   └── Properties/
+├── QuantityMeasurementApp.Business/
+│   ├── QuantityMeasurementApp.Business.csproj
+│   ├── Core/
+│   ├── Exceptions/
+│   ├── Extensions/
+│   ├── Interfaces/
+│   └── Service/
+├── QuantityMeasurementApp.Models/
+│   ├── QuantityMeasurementApp.Models.csproj
+│   ├── DTOs/
+│   ├── Entities/
+│   └── Enums/
+└── QuantityMeasurementApp.Repository/
+    ├── QuantityMeasurementApp.Repository.csproj
+    ├── cache/
+    ├── database/
+    ├── Extensions/
+    ├── Interfaces/
+    └── Sql/
 
 tests/
 └── QuantityMeasurementApp.Tests
-    ├── FeetTests.cs
     ├── IMeasurableTests.cs
-    ├── InchesTests.cs
     ├── LengthUnitTests.cs
+    ├── QuantityMeasurementApp.Tests.csproj
     ├── QuantityTests.cs
-   ├── QuantityUc13RefactorTests.cs
-   ├── TemperatureUnitTests.cs
-   ├── TemperatureUnsupportedOperationsTests.cs
+    ├── QuantityUc13RefactorTests.cs
     ├── QuantityVolumeTests.cs
     ├── QuantityWeightTests.cs
-    ├── UnitConversionTests.cs
+    ├── ServiceCompatibilityExtensions.cs
+    ├── TemperatureUnitTests.cs
+    ├── TemperatureUnsupportedOperationsTests.cs
     ├── UnitAdditionTests.cs
-   ├── UnitSubtractionTests.cs
-   ├── UnitDivisionTests.cs
-   ├── VolumeUnitTests.cs
-   ├── VolumeUnitConversionTests.cs
-   ├── VolumeUnitAdditionTests.cs
-   ├── VolumeUnitSubtractionTests.cs
-   ├── VolumeUnitDivisionTests.cs
-   ├── WeightUnitTests.cs
-   ├── WeightUnitConversionTests.cs
-   ├── WeightUnitAdditionTests.cs
-   ├── WeightUnitSubtractionTests.cs
-   └── WeightUnitDivisionTests.cs
+    ├── UnitConversionTests.cs
+    ├── UnitDivisionTests.cs
+    ├── UnitSubtractionTests.cs
+    ├── VolumeUnitAdditionTests.cs
+    ├── VolumeUnitConversionTests.cs
+    ├── VolumeUnitDivisionTests.cs
+    ├── VolumeUnitSubtractionTests.cs
+    ├── VolumeUnitTests.cs
+    ├── WeightUnitAdditionTests.cs
+    ├── WeightUnitConversionTests.cs
+    ├── WeightUnitDivisionTests.cs
+    ├── WeightUnitSubtractionTests.cs
+    └── WeightUnitTests.cs
 ```
 
 ## ▶ How to Run the Application
@@ -575,43 +685,6 @@ tests/
    cd src/QuantityMeasurementApp
    dotnet run
    ```
-
-### Expected Output (Sample from `dotnet run`)
-
-```text
-=== Length Operations ===
-Input: Quantity(1, Feet) and Quantity(12, Inches) -> Output: True
-Input: Quantity(1, Feet).ConvertTo(Inches) -> Output: Quantity(12, Inches)
-Input: Quantity(1, Feet).Add(Quantity(12, Inches), Feet) -> Output: Quantity(2, Feet)
-Input: Quantity(10, Feet).Subtract(Quantity(6, Inches)) -> Output: Quantity(9.5, Feet)
-Input: Quantity(10, Feet).Subtract(Quantity(6, Inches), Inches) -> Output: Quantity(114, Inches)
-Input: Quantity(24, Inches).Divide(Quantity(2, Feet)) -> Output: 1
-
-=== Weight Operations ===
-Input: Quantity(1, Kilogram) and Quantity(1000, Gram) -> Output: True
-Input: Quantity(1, Kilogram).ConvertTo(Gram) -> Output: Quantity(1000, Gram)
-Input: Quantity(1, Kilogram).Add(Quantity(1000, Gram), Kilogram) -> Output: Quantity(2, Kilogram)
-Input: Quantity(10, Kilogram).Subtract(Quantity(5000, Gram)) -> Output: Quantity(5, Kilogram)
-Input: Quantity(10, Kilogram).Subtract(Quantity(5000, Gram), Gram) -> Output: Quantity(5000, Gram)
-Input: Quantity(10, Kilogram).Divide(Quantity(5, Kilogram)) -> Output: 2
-
-=== Volume Operations ===
-Input: Quantity(1, Litre) and Quantity(1000, Millilitre) -> Output: True
-Input: Quantity(1, Gallon).ConvertTo(Litre) -> Output: Quantity(3.79, Litre)
-Input: Quantity(1, Litre).Add(Quantity(1, Gallon), Millilitre) -> Output: Quantity(4785.41, Millilitre)
-Input: Quantity(5, Litre).Subtract(Quantity(500, Millilitre)) -> Output: Quantity(4.5, Litre)
-Input: Quantity(5, Litre).Subtract(Quantity(2, Litre), Millilitre) -> Output: Quantity(3000, Millilitre)
-Input: Quantity(1000, Millilitre).Divide(Quantity(1, Litre)) -> Output: 1
-
-=== Temperature Operations ===
-Input: Quantity(0, Celsius) and Quantity(32, Fahrenheit) -> Output: True
-Input: Quantity(273.15, Kelvin) and Quantity(0, Celsius) -> Output: True
-Input: Quantity(100, Celsius).ConvertTo(Fahrenheit) -> Output: Quantity(212, Fahrenheit)
-Input: Quantity(273.15, Kelvin).ConvertTo(Celsius) -> Output: Quantity(0, Celsius)
-Input: Quantity(100, Celsius).Add(Quantity(50, Celsius)) -> Error: Temperature does not support Add operation for absolute values.
-Input: Quantity(100, Celsius).Divide(Quantity(50, Celsius)) -> Error: Temperature does not support Divide operation for absolute values.
-```
-
 ---
 
 ## 🧪 How to Run Unit Tests

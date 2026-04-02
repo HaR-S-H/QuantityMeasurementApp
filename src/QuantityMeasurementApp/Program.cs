@@ -1,33 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QuantityMeasurementApp.Business;
-using QuantityMeasurementApp.Middleware;
-using QuantityMeasurementApp.Repository;
-using QuantityMeasurementApp.Repository.Data;
+﻿using System;
+using QuantityMeasurementApp.Startup;
+using QuantityMeasurementApp.UI;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<QuantityMeasurementDbContext>(options =>
-    options.UseInMemoryDatabase("QuantityMeasurementDb")
-);
-
-builder.Services.AddScoped<IQuantityMeasurementRepository, EfQuantityMeasurementRepository>();
-builder.Services.AddScoped<IQuantityMeasurementService, QuantityMeasurementServiceImpl>();
-
-var app = builder.Build();
-
-app.UseMiddleware<GlobalExceptionMiddleware>();
-
-if (app.Environment.IsDevelopment())
+namespace QuantityMeasurementApp
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    /// <summary>
+    /// Console application entry point.
+    /// </summary>
+    internal class Program
+    {
+        /// <summary>
+        /// Main application entry point.
+        /// </summary>
+        private static void Main()
+        {
+            try
+            {
+                var factory = new ServiceFactory();
+                var service = factory.CreateService();
+                var repository = factory.CreateRepository();
+
+                IConsoleMenu menuApp = new ConsoleMenu(service, repository);
+                menuApp.Run();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"An error occurred: {exception.Message}");
+            }
+        }
+    }
 }
-
-app.UseHttpsRedirection();
-app.MapControllers();
-
-app.Run();
