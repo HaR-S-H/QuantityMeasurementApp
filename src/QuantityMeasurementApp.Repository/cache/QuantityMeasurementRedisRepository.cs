@@ -116,6 +116,19 @@ namespace QuantityMeasurementApp.Repository
             DateTime CreatedAt
         )
         {
+            /// <summary>
+            /// Parameterless constructor required for System.Text.Json deserialization.
+            /// </summary>
+            public CachedQuantityMeasurement()
+                : this(
+                    Guid.Empty,
+                    null,
+                    string.Empty,
+                    false,
+                    string.Empty,
+                    DateTime.MinValue
+                ) { }
+
             public CachedQuantityMeasurement(QuantityMeasurementEntity source)
                 : this(
                     source.Id,

@@ -12,7 +12,7 @@ using QuantityMeasurementApp.Models.DTOs;
 namespace QuantityMeasurementApp.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/Auth")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -61,10 +61,12 @@ public class AuthController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("google")]
+    [HttpPost("google-login")]
     public async Task<ActionResult<AuthResponseDTO>> GoogleLogin([FromBody] GoogleLoginRequestDTO request)
     {
-        if (string.IsNullOrWhiteSpace(_googleAuthOptions.ClientId))
+        var allowedClientIds = _googleAuthOptions.GetAllowedClientIds();
+        
+        if (allowedClientIds.Length == 0 || string.IsNullOrWhiteSpace(allowedClientIds[0]))
         {
             return StatusCode(500, "Google authentication is not configured.");
         }
@@ -80,7 +82,7 @@ public class AuthController : ControllerBase
                 request.IdToken,
                 new GoogleJsonWebSignature.ValidationSettings
                 {
-                    Audience = new[] { _googleAuthOptions.ClientId },
+                    Audience = allowedClientIds,
                 }
             );
 
@@ -97,13 +99,17 @@ public class AuthController : ControllerBase
             var displayName = string.IsNullOrWhiteSpace(payload.Name) ? payload.Email : payload.Name;
             return Ok(_authService.ExternalLogin(displayName, payload.Email));
         }
-        catch (InvalidJwtException)
+        catch (InvalidJwtException ex)
         {
-            return Unauthorized("Invalid Google token.");
+            return Unauthorized($"Invalid Google token: {ex.Message}");
         }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Google authentication error: {ex.Message}");
         }
     }
 

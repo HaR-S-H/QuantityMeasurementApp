@@ -1,7 +1,7 @@
 @QuantityMeasurementApp.Api_HostAddress = http://localhost:5097
 
-### Signup
-POST {{QuantityMeasurementApp.Api_HostAddress}}/api/auth/signup
+### Auth: Signup
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/Auth/signup
 Content-Type: application/json
 
 {
@@ -10,8 +10,8 @@ Content-Type: application/json
 	"password": "Test@123"
 }
 
-### Login
-POST {{QuantityMeasurementApp.Api_HostAddress}}/api/auth/login
+### Auth: Login
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/Auth/login
 Content-Type: application/json
 
 {
@@ -19,12 +19,94 @@ Content-Type: application/json
 	"password": "Test@123"
 }
 
-### Google Login (paste a valid Google ID token)
-POST {{QuantityMeasurementApp.Api_HostAddress}}/api/auth/google
+### Auth: Google Login (paste a valid Google ID token)
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/Auth/google-login
 Content-Type: application/json
 
 {
 	"idToken": "PASTE_GOOGLE_ID_TOKEN_HERE"
 }
 
-###
+### Auth: Logout (requires bearer token)
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/Auth/logout
+Authorization: Bearer PASTE_JWT_TOKEN_HERE
+Content-Type: application/json
+
+### QuantityMeasurement: Convert
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/QuantityMeasurement/convert
+Content-Type: application/json
+
+{
+	"source": {
+		"value": 10,
+		"unit": "Feet"
+	},
+	"targetUnit": "Inches"
+}
+
+### QuantityMeasurement: Compare
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/QuantityMeasurement/compare
+Content-Type: application/json
+
+{
+	"first": {
+		"value": 10,
+		"unit": "Feet"
+	},
+	"second": {
+		"value": 120,
+		"unit": "Inches"
+	}
+}
+
+### QuantityMeasurement: Add
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/QuantityMeasurement/add
+Content-Type: application/json
+
+{
+	"first": {
+		"value": 5,
+		"unit": "Feet"
+	},
+	"second": {
+		"value": 2,
+		"unit": "Feet"
+	},
+	"targetUnit": "Feet"
+}
+
+### QuantityMeasurement: Subtract
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/QuantityMeasurement/subtract
+Content-Type: application/json
+
+{
+	"first": {
+		"value": 10,
+		"unit": "Feet"
+	},
+	"second": {
+		"value": 3,
+		"unit": "Feet"
+	},
+	"targetUnit": "Feet"
+}
+
+### QuantityMeasurement: Divide
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/QuantityMeasurement/divide
+Content-Type: application/json
+
+{
+	"first": {
+		"value": 10,
+		"unit": "Feet"
+	},
+	"second": {
+		"value": 2,
+		"unit": "Feet"
+	}
+}
+
+### QuantityMeasurement: Get History (requires bearer token)
+GET {{QuantityMeasurementApp.Api_HostAddress}}/api/QuantityMeasurement/history
+Authorization: Bearer PASTE_JWT_TOKEN_HERE
+Content-Type: application/json

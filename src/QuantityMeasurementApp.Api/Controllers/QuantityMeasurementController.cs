@@ -10,7 +10,7 @@ using QuantityMeasurementApp.Repository;
 namespace QuantityMeasurementApp.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/QuantityMeasurement")]
 public class QuantityMeasurementController : ControllerBase
 {
     private readonly IQuantityMeasurementService _service;
