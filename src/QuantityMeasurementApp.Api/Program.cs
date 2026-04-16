@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -37,6 +38,7 @@ builder.Services.AddCors(options =>
                 .WithOrigins(allowedOrigins)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
+                .AllowCredentials()
     );
 });
 builder.Services.AddEndpointsApiExplorer();
@@ -142,6 +144,16 @@ using (var scope = app.Services.CreateScope())
     // });
     app.UseSwaggerUI();
 //}
+
+    app.UseForwardedHeaders(
+        new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+            // Render and similar platforms terminate TLS at the proxy, so trust forwarded headers.
+            KnownNetworks = { },
+            KnownProxies = { },
+        }
+    );
 
 app.UseHttpsRedirection();
 
