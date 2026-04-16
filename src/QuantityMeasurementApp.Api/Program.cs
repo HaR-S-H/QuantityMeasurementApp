@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
         ??
         [
             "http://localhost:4200",
-            "https://quantitymeasurementapp-frontend-bh2q.onrender.com"
+            "https://quantitymeasurementapp-frontend-ten5.onrender.com"
         ];
 
     options.AddPolicy(
