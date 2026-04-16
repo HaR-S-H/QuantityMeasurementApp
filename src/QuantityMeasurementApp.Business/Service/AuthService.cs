@@ -77,6 +77,33 @@ namespace QuantityMeasurementApp.Business
             return CreateAuthResponse(user);
         }
 
+        public AuthResponseDTO ExternalLogin(string name, string email)
+        {
+            var normalizedEmail = NormalizeEmail(email);
+            var normalizedName = name?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(normalizedEmail) || !normalizedEmail.Contains('@'))
+            {
+                throw new ArgumentException("Valid email is required.", nameof(email));
+            }
+
+            if (string.IsNullOrWhiteSpace(normalizedName))
+            {
+                normalizedName = normalizedEmail.Split('@')[0];
+            }
+
+            var user = _userRepository.GetByEmail(normalizedEmail);
+            if (user is null)
+            {
+                // Assign a random password hash for externally authenticated accounts.
+                var randomPasswordHash = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString("N"));
+                user = new UserEntity(normalizedName, normalizedEmail, randomPasswordHash, string.Empty);
+                _userRepository.Add(user);
+            }
+
+            return CreateAuthResponse(user);
+        }
+
         public void Logout(string tokenId, DateTime expiresAtUtc)
         {
             if (string.IsNullOrWhiteSpace(tokenId))

@@ -13,6 +13,11 @@ namespace QuantityMeasurementApp.Models.DTOs
         public string Password { get; set; } = string.Empty;
     }
 
+    public class GoogleLoginRequestDTO
+    {
+        public string IdToken { get; set; } = string.Empty;
+    }
+
     public class AuthResponseDTO
     {
         public string Token { get; set; } = string.Empty;

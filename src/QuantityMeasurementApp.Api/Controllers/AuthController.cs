@@ -1,8 +1,11 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using QuantityMeasurementApp.Api.Options;
 using QuantityMeasurementApp.Business;
 using QuantityMeasurementApp.Models.DTOs;
 
@@ -13,10 +16,12 @@ namespace QuantityMeasurementApp.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
+    private readonly GoogleAuthOptions _googleAuthOptions;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, IOptions<GoogleAuthOptions> googleAuthOptions)
     {
         _authService = authService;
+        _googleAuthOptions = googleAuthOptions.Value;
     }
 
     [AllowAnonymous]
@@ -48,6 +53,53 @@ public class AuthController : ControllerBase
         catch (UnauthorizedAccessException ex)
         {
             return Unauthorized(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpPost("google")]
+    public async Task<ActionResult<AuthResponseDTO>> GoogleLogin([FromBody] GoogleLoginRequestDTO request)
+    {
+        if (string.IsNullOrWhiteSpace(_googleAuthOptions.ClientId))
+        {
+            return StatusCode(500, "Google authentication is not configured.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.IdToken))
+        {
+            return BadRequest("Google id token is required.");
+        }
+
+        try
+        {
+            var payload = await GoogleJsonWebSignature.ValidateAsync(
+                request.IdToken,
+                new GoogleJsonWebSignature.ValidationSettings
+                {
+                    Audience = new[] { _googleAuthOptions.ClientId },
+                }
+            );
+
+            if (payload is null || string.IsNullOrWhiteSpace(payload.Email))
+            {
+                return Unauthorized("Invalid Google token payload.");
+            }
+
+            if (payload.EmailVerified is not true)
+            {
+                return Unauthorized("Google email must be verified.");
+            }
+
+            var displayName = string.IsNullOrWhiteSpace(payload.Name) ? payload.Email : payload.Name;
+            return Ok(_authService.ExternalLogin(displayName, payload.Email));
+        }
+        catch (InvalidJwtException)
+        {
+            return Unauthorized("Invalid Google token.");
         }
         catch (ArgumentException ex)
         {

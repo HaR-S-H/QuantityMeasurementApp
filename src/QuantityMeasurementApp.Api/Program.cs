@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using QuantityMeasurementApp.Api.Options;
 using QuantityMeasurementApp.Business;
 using QuantityMeasurementApp.Repository;
 
@@ -22,11 +23,18 @@ builder
     });
 builder.Services.AddCors(options =>
 {
+    var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+        ??
+        [
+            "http://localhost:4200",
+            "https://quantitymeasurementapp-frontend-bh2q.onrender.com"
+        ];
+
     options.AddPolicy(
-        "FrontendDev",
+        "FrontendClients",
         policy =>
             policy
-                .SetIsOriginAllowed(_ => true)
+                .WithOrigins(allowedOrigins)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
     );
@@ -66,6 +74,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
+builder.Services.Configure<GoogleAuthOptions>(
+    builder.Configuration.GetSection(GoogleAuthOptions.SectionName)
+);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IQuantityMeasurementService, QuantityMeasurementServiceImpl>();
 // Repository layer handles SQL persistence and optional Redis caching.
@@ -122,19 +133,19 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure middleware pipeline.
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     // app.UseSwaggerUI(options =>
     // {
     //     options.DefaultModelsExpandDepth(-1);
     // });
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
-app.UseCors("FrontendDev");
+app.UseCors("FrontendClients");
 
 app.UseAuthentication();
 app.UseAuthorization();

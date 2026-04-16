@@ -11,6 +11,37 @@ Each use case expands functionality in a controlled and maintainable way.
 
 ---
 
+## 🧩 Microservices (Initial Setup)
+
+The solution now includes one dedicated microservice:
+
+- `QuantityMeasurementApp.HistoryService`
+
+### What it does
+
+- Exposes operation history APIs
+- Persists and reads operation history via existing SQL/Redis repository layer
+- Runs independently from the main API service
+
+### Run it
+
+```bash
+dotnet run --project src/QuantityMeasurementApp.HistoryService/QuantityMeasurementApp.HistoryService.csproj
+```
+
+### Endpoints
+
+- `GET /health`
+- `GET /api/history`
+- `GET /api/history/user/{email}`
+- `POST /api/history`
+
+You can use the request samples in:
+
+- `src/QuantityMeasurementApp.HistoryService/QuantityMeasurementApp.HistoryService.http`
+
+---
+
 ## 🚀 Use Case 1 (UC1) – Feet Measurement Equality
 
 ### Description

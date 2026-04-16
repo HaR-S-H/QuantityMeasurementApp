@@ -28,7 +28,14 @@ namespace QuantityMeasurementApp.Repository
             }
 
             services.AddDbContext<QuantityMeasurementDbContext>(options =>
-                options.UseSqlServer(sqlConnectionString)
+                options.UseSqlServer(
+                    sqlConnectionString,
+                    sqlServerOptions => sqlServerOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null
+                    )
+                )
             );
 
             services.AddScoped<IUserRepository, UserDatabaseRepository>();

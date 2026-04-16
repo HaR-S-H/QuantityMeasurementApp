@@ -7,6 +7,7 @@ namespace QuantityMeasurementApp.Business
     {
         AuthResponseDTO Signup(SignupRequestDTO request);
         AuthResponseDTO Login(LoginRequestDTO request);
+        AuthResponseDTO ExternalLogin(string name, string email);
         void Logout(string tokenId, DateTime expiresAtUtc);
         bool IsTokenRevoked(string tokenId);
     }

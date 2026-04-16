@@ -1,2 +1,30 @@
 @QuantityMeasurementApp.Api_HostAddress = http://localhost:5097
+
+### Signup
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/auth/signup
+Content-Type: application/json
+
+{
+	"name": "Test User",
+	"email": "test.user@example.com",
+	"password": "Test@123"
+}
+
+### Login
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+	"email": "test.user@example.com",
+	"password": "Test@123"
+}
+
+### Google Login (paste a valid Google ID token)
+POST {{QuantityMeasurementApp.Api_HostAddress}}/api/auth/google
+Content-Type: application/json
+
+{
+	"idToken": "PASTE_GOOGLE_ID_TOKEN_HERE"
+}
+
 ###
